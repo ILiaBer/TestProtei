@@ -1,4 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import jdk.jfr.Timespan;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+
 import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.openqa.selenium.By.cssSelector;
@@ -24,9 +27,9 @@ public class SeleniumTest {
     @BeforeEach
     void setUp() {
         ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--disable-dev-shm-usage");
+       // options.addArguments("--disable-dev-shm-usage");
         //options.addArguments("--no-sandbox");
-       // options.addArguments("--headless");
+        //options.addArguments("--headless");
         driver = new ChromeDriver(options);
         driver.get("file:///C://Games//TestProtei//artifacts//qa-test.html");
     }
@@ -287,7 +290,24 @@ public class SeleniumTest {
     }
 
     @Test
-    void addNineVariousUsers() {
+    void negativeCombinationWithWoman() {
+        driver.findElement(cssSelector("[type='text']")).sendKeys("test@protei.ru");
+        driver.findElement(cssSelector("[type='password']")).sendKeys("test");
+        driver.findElement(cssSelector("[id='authButton']")).click();
+        driver.findElement(cssSelector("[id='dataEmail']")).sendKeys("berestova_2000");
+        driver.findElement(cssSelector("[id='dataName']")).sendKeys("Маша");
+        List<WebElement> genderField = driver.findElements(cssSelector("option"));
+        genderField.get(1).click();
+        driver.findElement(cssSelector("[type='checkBox'][id='dataCheck11']")).click();
+        driver.findElement(cssSelector("[type='checkBox'][id='dataCheck12']")).click();
+        driver.findElement(cssSelector("[name='radioGroup'][id='dataSelect23']")).click();
+        driver.findElement(cssSelector("[type='submit'][id='dataSend']")).click();
+        String text = driver.findElement(cssSelector("[id='emailFormatError']")).getText();
+        assertEquals("Неверный формат E-Mail", text.trim());
+    }
+
+    @Test
+    void addNineVariousUsers()  {
         driver.findElement(cssSelector("[type='text']")).sendKeys("test@protei.ru");
         driver.findElement(cssSelector("[type='password']")).sendKeys("test");
         driver.findElement(cssSelector("[id='authButton']")).click();
@@ -375,9 +395,6 @@ public class SeleniumTest {
         genderField9.get(0).click();
         driver.findElement(cssSelector("[type='submit'][id='dataSend']")).click();
         driver.findElement(cssSelector("[class='uk-button uk-button-primary uk-modal-close']")).click();
-
-      //  String text = driver.findElement(cssSelector("[tbody]")).;
-
         List<WebElement> userField = driver.findElements(cssSelector("tbody"));
         String text = userField.get(0).getText();
         assertEquals("berestov_2000@bk.ru Илья Мужской 1.1 2.1\n" +
